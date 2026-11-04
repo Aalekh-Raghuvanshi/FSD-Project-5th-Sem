@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import Dashboard from './Dashboard.jsx'
 import Appointments from './Appointments.jsx'
+import Departments from './Departments.jsx'
 import Doctors from './Doctors.jsx'
 import Patients from './Patients.jsx'
 import {
@@ -134,7 +135,9 @@ function AppLayout() {
         ? <Doctors />
         : page.path === '/appointments'
           ? <Appointments />
-          : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
+          : page.path === '/departments'
+            ? <Departments />
+            : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
 
   return (
     <div className="min-h-screen bg-[#f4f8fb] lg:flex">
