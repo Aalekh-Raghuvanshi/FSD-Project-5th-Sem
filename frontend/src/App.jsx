@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import Dashboard from './Dashboard.jsx'
+import Patients from './Patients.jsx'
 import {
   Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
   Menu, Search, Settings, ShieldAlert, Stethoscope, Users, X, Building2,
@@ -123,7 +124,11 @@ function AppLayout() {
     Reports: 'Explore hospital activity and performance summaries.',
     Settings: 'Manage hospital profile and application preferences.',
   }
-  const content = page.path === '/' ? <Dashboard /> : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
+  const content = page.path === '/'
+    ? <Dashboard />
+    : page.path === '/patients'
+      ? <Patients />
+      : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
 
   return (
     <div className="min-h-screen bg-[#f4f8fb] lg:flex">

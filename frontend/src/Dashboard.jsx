@@ -6,6 +6,7 @@ import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart,
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts'
+import { Link } from 'react-router-dom'
 
 const admissions = [
   { day: 'Mon', patients: 32 }, { day: 'Tue', patients: 45 }, { day: 'Wed', patients: 38 },
@@ -70,7 +71,7 @@ function Dashboard() {
     <div className="mx-auto max-w-[1500px] space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div><p className="text-sm text-slate-500">{today}</p><h2 className="mt-1 text-2xl font-bold tracking-tight text-[#18344e]">Good morning, Admin <span aria-hidden="true">☀️</span></h2><p className="mt-1 text-sm text-slate-500">Here’s what’s happening at CarePoint today.</p></div>
-        <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#168f91] px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#117d7f]"><Plus size={16} /> Add new patient</button>
+        <Link to="/patients" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#168f91] px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#117d7f]"><Plus size={16} /> Add new patient</Link>
       </div>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
