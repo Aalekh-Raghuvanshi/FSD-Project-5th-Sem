@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import Dashboard from './Dashboard.jsx'
 import {
   Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
   Menu, Search, Settings, ShieldAlert, Stethoscope, Users, X, Building2,
@@ -107,10 +108,6 @@ function PlaceholderPage({ page }) {
       </section>
     </div>
   )
-}
-
-function Dashboard() {
-  return <PlaceholderPage page={{ label: 'Dashboard', heading: 'Hospital overview', description: 'Your hospital operations at a glance. Dashboard statistics, charts, and recent activity will be added in the next step.', icon: LayoutDashboard }} />
 }
 
 function AppLayout() {
