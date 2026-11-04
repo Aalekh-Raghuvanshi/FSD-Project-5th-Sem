@@ -5,6 +5,7 @@ import Appointments from './Appointments.jsx'
 import Departments from './Departments.jsx'
 import Doctors from './Doctors.jsx'
 import Patients from './Patients.jsx'
+import Intelligence from './Intelligence.jsx'
 import {
   Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
   Menu, Search, Settings, ShieldAlert, Stethoscope, Users, X, Building2,
@@ -137,7 +138,9 @@ function AppLayout() {
           ? <Appointments />
           : page.path === '/departments'
             ? <Departments />
-            : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
+            : page.path === '/intelligence'
+              ? <Intelligence />
+              : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
 
   return (
     <div className="min-h-screen bg-[#f4f8fb] lg:flex">
