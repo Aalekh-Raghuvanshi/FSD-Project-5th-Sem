@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import Dashboard from './Dashboard.jsx'
+import Doctors from './Doctors.jsx'
 import Patients from './Patients.jsx'
 import {
   Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
@@ -128,6 +129,8 @@ function AppLayout() {
     ? <Dashboard />
     : page.path === '/patients'
       ? <Patients />
+      : page.path === '/doctors'
+        ? <Doctors />
       : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
 
   return (
