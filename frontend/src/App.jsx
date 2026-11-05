@@ -7,6 +7,8 @@ import Doctors from './Doctors.jsx'
 import Patients from './Patients.jsx'
 import Intelligence from './Intelligence.jsx'
 import Reports from './Reports.jsx'
+import { readSettings } from './settings.js'
+import SettingsPage from './SettingsPage.jsx'
 import {
   Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
   Menu, Search, Settings, ShieldAlert, Stethoscope, Users, X, Building2,
@@ -24,6 +26,7 @@ const navigation = [
 ]
 
 function Sidebar({ closeMenu }) {
+  const hospitalSettings = readSettings()
   return (
     <aside className="flex h-full w-[258px] shrink-0 flex-col bg-[#142d46] px-4 py-6 text-white">
       <div className="flex items-center gap-3 px-2">
@@ -32,7 +35,7 @@ function Sidebar({ closeMenu }) {
         </div>
         <div>
           <div className="text-[17px] font-bold tracking-tight">CarePoint</div>
-          <div className="text-[11px] text-slate-400">HOSPITAL MANAGEMENT</div>
+          <div className="max-w-[180px] truncate text-[10px] text-slate-400">{hospitalSettings.hospitalName}</div>
         </div>
       </div>
 
@@ -64,6 +67,8 @@ function Sidebar({ closeMenu }) {
 
 function Topbar({ title, onMenu }) {
   const [profileOpen, setProfileOpen] = useState(false)
+  const userSettings = readSettings()
+  const initials = userSettings.adminName.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()
   const date = new Intl.DateTimeFormat('en', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(new Date())
 
   return (
@@ -87,8 +92,8 @@ function Topbar({ title, onMenu }) {
         </button>
         <div className="relative">
           <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-50" aria-expanded={profileOpen}>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d9eeec] text-xs font-bold text-[#147b79]">AK</span>
-            <span className="hidden text-left sm:block"><span className="block text-xs font-semibold text-slate-700">Admin Kumar</span><span className="block text-[10px] text-slate-400">Administrator</span></span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d9eeec] text-xs font-bold text-[#147b79]">{initials}</span>
+            <span className="hidden text-left sm:block"><span className="block text-xs font-semibold text-slate-700">{userSettings.adminName}</span><span className="block text-[10px] text-slate-400">Administrator</span></span>
             <ChevronDown size={14} className="hidden text-slate-400 sm:block" />
           </button>
           {profileOpen && <div className="absolute right-0 top-12 w-44 rounded-xl border border-slate-100 bg-white p-2 shadow-lg"><button onClick={() => setProfileOpen(false)} className="w-full rounded-lg px-3 py-2 text-left text-xs text-slate-600 hover:bg-slate-50">My profile</button><button onClick={() => setProfileOpen(false)} className="w-full rounded-lg px-3 py-2 text-left text-xs text-slate-600 hover:bg-slate-50">Account settings</button></div>}
@@ -143,7 +148,9 @@ function AppLayout() {
               ? <Intelligence />
               : page.path === '/reports'
                 ? <Reports />
-                : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
+                : page.path === '/settings'
+                  ? <SettingsPage />
+                  : <PlaceholderPage page={{ ...page, heading: page.label, description: descriptions[page.label] }} />
 
   return (
     <div className="min-h-screen bg-[#f4f8fb] lg:flex">
@@ -151,7 +158,7 @@ function AppLayout() {
       {mobileMenuOpen && <div className="fixed inset-0 z-40 lg:hidden"><button onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-slate-950/40" aria-label="Close navigation" /><div className="relative h-full w-[280px]"><button onClick={() => setMobileMenuOpen(false)} className="absolute right-3 top-3 z-10 rounded-lg p-2 text-white hover:bg-white/10" aria-label="Close menu"><X size={18} /></button><Sidebar closeMenu={() => setMobileMenuOpen(false)} /></div></div>}
       <div className="min-w-0 flex-1">
         <Topbar title={page.label} onMenu={() => setMobileMenuOpen(true)} />
-        <main className="px-5 py-7 md:px-8 md:py-9">{content}</main>
+        <main className={`px-5 py-7 md:px-8 md:py-9 ${readSettings().compactTables ? 'compact-table' : ''}`}>{content}</main>
       </div>
     </div>
   )

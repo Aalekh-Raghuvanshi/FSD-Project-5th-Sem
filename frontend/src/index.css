@@ -28,3 +28,27 @@ input {
 button {
   cursor: pointer;
 }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #159b9a;
+  outline-offset: 2px;
+}
+
+::selection {
+  color: #17324d;
+  background: #bde7e3;
+}
+
+.compact-table td {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+* {
+  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-width: thin;
+}

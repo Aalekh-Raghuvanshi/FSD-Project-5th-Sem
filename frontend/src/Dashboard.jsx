@@ -7,6 +7,7 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts'
 import { Link } from 'react-router-dom'
+import { readSettings } from './settings.js'
 
 const admissions = [
   { day: 'Mon', patients: 32 }, { day: 'Tue', patients: 45 }, { day: 'Wed', patients: 38 },
@@ -58,6 +59,7 @@ function SectionHeading({ title, action }) {
 }
 
 function Dashboard() {
+  const preferences = readSettings()
   const today = new Intl.DateTimeFormat('en', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(new Date())
   const shortDate = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric' }).format(new Date())
   const stats = [
@@ -134,9 +136,9 @@ function Dashboard() {
         </article>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <section className={`grid grid-cols-1 gap-5 ${preferences.showHealthAlerts ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}`}>
         <article className="rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Recent activity" action={<button className="text-[11px] font-semibold text-teal">View all</button>} /><div className="space-y-4">{activities.map(({ icon: Icon, color, title, detail }) => <div key={title} className="flex items-center gap-3"><span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${color}`}><Icon size={16} /></span><div className="min-w-0"><p className="text-xs font-semibold text-slate-700">{title}</p><p className="mt-1 truncate text-[10px] text-slate-400">{detail}</p></div><ArrowRight size={14} className="ml-auto text-slate-300" /></div>)}</div></article>
-        <article className="rounded-2xl border border-orange-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Health alerts" action={<span className="rounded-full bg-orange-50 px-2 py-1 text-[10px] font-semibold text-orange-700">3 need attention</span>} /><div className="space-y-3"><div className="flex gap-3 rounded-xl border border-rose-100 bg-rose-50/50 p-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-rose-100 text-rose-600"><HeartPulse size={16} /></span><div><p className="text-xs font-semibold text-slate-700">Critical reading recorded</p><p className="mt-1 text-[10px] leading-4 text-slate-500">James Mitchell · Elevated blood pressure requires follow-up.</p></div></div><div className="flex gap-3 rounded-xl border border-orange-100 bg-orange-50/50 p-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-600"><Clock3 size={16} /></span><div><p className="text-xs font-semibold text-slate-700">Follow-up overdue</p><p className="mt-1 text-[10px] leading-4 text-slate-500">Mia Robinson · Missed scheduled check-in yesterday.</p></div></div><div className="flex items-center gap-2 pt-1 text-[10px] text-slate-400"><Activity size={13} className="text-teal" /> Alert information is for demonstration purposes.</div></div></article>
+        {preferences.showHealthAlerts && <article className="rounded-2xl border border-orange-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Health alerts" action={<span className="rounded-full bg-orange-50 px-2 py-1 text-[10px] font-semibold text-orange-700">3 need attention</span>} /><div className="space-y-3"><div className="flex gap-3 rounded-xl border border-rose-100 bg-rose-50/50 p-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-rose-100 text-rose-600"><HeartPulse size={16} /></span><div><p className="text-xs font-semibold text-slate-700">Critical reading recorded</p><p className="mt-1 text-[10px] leading-4 text-slate-500">James Mitchell · Elevated blood pressure requires follow-up.</p></div></div><div className="flex gap-3 rounded-xl border border-orange-100 bg-orange-50/50 p-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-600"><Clock3 size={16} /></span><div><p className="text-xs font-semibold text-slate-700">Follow-up overdue</p><p className="mt-1 text-[10px] leading-4 text-slate-500">Mia Robinson · Missed scheduled check-in yesterday.</p></div></div><div className="flex items-center gap-2 pt-1 text-[10px] text-slate-400"><Activity size={13} className="text-teal" /> Alert information is for demonstration purposes.</div></div></article>}
       </section>
     </div>
   )
