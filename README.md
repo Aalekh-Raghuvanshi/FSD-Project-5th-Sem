@@ -1,15 +1,14 @@
 # CarePoint — Smart Hospital Management
 
-CarePoint is a college project for managing fictional hospital records. It combines a React dashboard with an Express REST API. The dashboard shows simple, rule-based health alerts; there is no separate Patient Intelligence page.
+CarePoint is a college project for managing fictional hospital records. It combines a React dashboard with an Express REST API.
 
 ## Features
 
-- Hospital overview with live patient, doctor, appointment, department, and alert data.
+- Hospital overview with live patient, doctor, appointment, and department data.
 - Patient registration, editing, search, filters, and patient profiles.
 - Doctor directory with add, edit, availability, and department filters.
 - Appointment scheduling, status updates, cancellation, and conflict checks.
 - Department summaries with live doctor and patient counts.
-- Rule-based health alerts on the dashboard.
 - Reports with registration, department, appointment, and patient-status charts.
 - Hospital and administrator settings saved in browser local storage; the administrator menu opens Settings.
 - Responsive navigation and layouts for desktop and mobile.
@@ -77,7 +76,6 @@ backend/
     appointmentRoutes.js
     departmentRoutes.js
     doctorRoutes.js
-    intelligenceRoutes.js
     patientRoutes.js
   server.js
 frontend/
@@ -123,9 +121,6 @@ The API base URL is `http://localhost:5001`. JSON request bodies are used for cr
 | `PUT` | `/api/appointments/:id` | Update an appointment or its status |
 | `DELETE` | `/api/appointments/:id` | Delete an appointment |
 | `GET` | `/api/departments` | List departments with doctor and patient counts |
-| `GET` | `/api/intelligence/overview` | Get risk totals and patient follow-up insights |
-| `GET` | `/api/intelligence/alerts` | Get rule-generated health alerts |
-| `GET` | `/api/intelligence/patients/:id` | Get one patient's intelligence summary |
 
 Appointment creation checks that the patient and doctor exist, validates the date and time, and prevents the same doctor from being scheduled for two active appointments at the same time. Patient and doctor deletion also preserve record relationships.
 

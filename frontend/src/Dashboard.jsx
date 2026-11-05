@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import {
-  Activity, AlertCircle, AlertTriangle, ArrowRight, CalendarDays,
-  CheckCircle2, HeartPulse, LoaderCircle, Plus, Stethoscope, Users,
+  AlertCircle, ArrowRight, CalendarDays,
+  CheckCircle2, HeartPulse, LoaderCircle, Stethoscope, Users,
 } from 'lucide-react'
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart,
@@ -35,7 +35,6 @@ function Dashboard() {
   const [doctors, setDoctors] = useState([])
   const [appointments, setAppointments] = useState([])
   const [departments, setDepartments] = useState([])
-  const [alerts, setAlerts] = useState([])
   const [admissionRange, setAdmissionRange] = useState('7')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -46,18 +45,16 @@ function Dashboard() {
     setLoading(true)
     setError('')
     try {
-      const [patientResponse, doctorResponse, appointmentResponse, departmentResponse, alertResponse] = await Promise.all([
+      const [patientResponse, doctorResponse, appointmentResponse, departmentResponse] = await Promise.all([
         axios.get('/api/patients'),
         axios.get('/api/doctors'),
         axios.get('/api/appointments'),
         axios.get('/api/departments'),
-        axios.get('/api/intelligence/alerts'),
       ])
       setPatients(patientResponse.data)
       setDoctors(doctorResponse.data)
       setAppointments(appointmentResponse.data)
       setDepartments(departmentResponse.data)
-      setAlerts(alertResponse.data)
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Could not load the dashboard. Check that the backend is running on port 5001.')
     } finally {
@@ -127,7 +124,7 @@ function Dashboard() {
 
   return (
     <div className="mx-auto max-w-[1500px] space-y-6">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-sm text-slate-500">{formattedToday}</p><h2 className="mt-1 text-2xl font-bold tracking-tight text-[#18344e]">Good morning, {settings.adminName} <span aria-hidden="true">☀️</span></h2><p className="mt-1 text-sm text-slate-500">Here’s what’s happening at {settings.hospitalName} today.</p></div><Link to="/patients" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#168f91] px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#117d7f]"><Plus size={16} /> Add new patient</Link></div>
+      <div><p className="text-sm text-slate-500">{formattedToday}</p><h2 className="mt-1 text-2xl font-bold tracking-tight text-[#18344e]">Good morning, {settings.adminName} <span aria-hidden="true">☀️</span></h2><p className="mt-1 text-sm text-slate-500">Here’s what’s happening at {settings.hospitalName} today.</p></div>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(({ label, value, note, icon: Icon, style }) => <article key={label} className="rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] transition hover:-translate-y-0.5 hover:shadow-md"><div className={`flex h-10 w-10 items-center justify-center rounded-xl ${style}`}><Icon size={19} /></div><p className="mt-4 text-2xl font-bold tracking-tight text-[#18344e]">{value}</p><p className="mt-1 text-xs font-medium text-slate-600">{label}</p><p className="mt-1 text-[10px] text-slate-400">{note}</p></article>)}</section>
 
@@ -145,9 +142,8 @@ function Dashboard() {
         <article className="rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Upcoming appointments" action={<Link to="/appointments" className="text-[11px] font-semibold text-teal hover:text-teal-800">View schedule</Link>} /><div className="mb-4 flex items-center gap-2 rounded-xl bg-[#f2f8f8] px-3 py-2.5 text-xs font-semibold text-[#18344e]"><CalendarDays size={15} className="text-teal" /> Today, {shortDate}<span className="ml-auto text-[10px] font-medium text-slate-400">{todayAppointments.length} today</span></div>{upcomingAppointments.length ? <div className="space-y-4">{upcomingAppointments.map((appointment) => { const patient = patients.find((item) => item.id === appointment.patientId); const doctor = doctors.find((item) => item.id === appointment.doctorId); const department = departments.find((item) => item.id === appointment.departmentId); return <div key={appointment.id} className="flex gap-3"><div className="w-[72px] shrink-0 pt-0.5 text-[10px] font-semibold text-slate-500">{appointment.date === todayKey ? appointment.time : `${appointment.date.slice(5)}`}</div><div className={`w-0.5 shrink-0 rounded-full ${appointment.status === 'Pending' ? 'bg-orange-400' : 'bg-teal'}`} /><div className="min-w-0"><p className="truncate text-xs font-semibold text-slate-700">{patient?.fullName || 'Patient record'}</p><p className="mt-0.5 truncate text-[10px] text-slate-500">{appointment.reason} · {department?.name || 'Department'}</p><p className="mt-1 text-[10px] text-slate-400">{doctor?.name || 'Unassigned'} · {appointment.status}</p></div></div> })}</div> : <div className="flex min-h-32 flex-col items-center justify-center text-center"><CheckCircle2 size={22} className="text-emerald-500" /><p className="mt-2 text-xs font-semibold text-slate-700">No upcoming appointments</p><p className="mt-1 text-[10px] text-slate-400">New scheduled visits will appear here.</p></div>}</article>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <section className="grid grid-cols-1 gap-5">
         <article className="rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Recent activity" action={<Link to="/patients" className="text-[11px] font-semibold text-teal">Patient directory</Link>} />{recentRegistrations.length ? <div className="space-y-4">{recentRegistrations.map((patient) => <div key={patient.id} className="flex items-center gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Users size={16} /></span><div className="min-w-0"><p className="text-xs font-semibold text-slate-700">Patient registered · {patient.fullName}</p><p className="mt-1 truncate text-[10px] text-slate-400">{patient.id} · Admission date {patient.admissionDate}</p></div><ArrowRight size={14} className="ml-auto text-slate-300" /></div>)}</div> : <p className="text-xs text-slate-400">No recent activity.</p>}</article>
-        <article className="rounded-2xl border border-orange-100 bg-white p-5 shadow-[0_3px_14px_rgba(22,48,72,0.04)] sm:p-6"><SectionHeading title="Health alerts" action={<span className="rounded-full bg-orange-50 px-2 py-1 text-[10px] text-orange-700">{alerts.length} alerts</span>} />{alerts.length ? <div className="space-y-3">{alerts.slice(0, 3).map((alert, index) => <div key={`${alert.patientId}-${alert.title}-${index}`} className={`flex gap-3 rounded-xl border p-3 ${alert.level === 'High' ? 'border-rose-100 bg-rose-50/50' : 'border-orange-100 bg-orange-50/50'}`}><span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${alert.level === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-orange-100 text-orange-600'}`}><AlertTriangle size={16} /></span><div className="min-w-0"><p className="text-xs font-semibold text-slate-700">{alert.title} · {alert.patientName}</p><p className="mt-1 text-[10px] leading-4 text-slate-500">{alert.message}</p></div></div>)}</div> : <div className="flex min-h-24 items-center gap-2 text-xs text-slate-500"><CheckCircle2 size={16} className="text-emerald-500" /> No active health alerts.</div>}<div className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-3 text-[10px] text-slate-400"><Activity size={13} className="text-teal" /> Rule-based demonstration alerts; not clinically validated.</div></article>}
       </section>
     </div>
   )

@@ -5,7 +5,7 @@ export const defaultSettings = {
   hospitalEmail: 'hello@carepoint.example.test',
   hospitalPhone: '555-0100',
   hospitalAddress: '100 Wellness Avenue, Greenfield',
-  adminName: 'Admin Kumar',
+  adminName: 'Admin',
   adminEmail: 'admin@carepoint.example.test',
 }
 
