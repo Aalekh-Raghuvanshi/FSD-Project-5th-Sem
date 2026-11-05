@@ -7,14 +7,12 @@ export const defaultSettings = {
   hospitalAddress: '100 Wellness Avenue, Greenfield',
   adminName: 'Admin Kumar',
   adminEmail: 'admin@carepoint.example.test',
-  reportRange: '30',
-  compactTables: false,
-  showHealthAlerts: true,
 }
 
 export function readSettings() {
   try {
-    return { ...defaultSettings, ...JSON.parse(localStorage.getItem(settingsStorageKey) || '{}') }
+    const storedSettings = JSON.parse(localStorage.getItem(settingsStorageKey) || '{}')
+    return Object.fromEntries(Object.keys(defaultSettings).map((key) => [key, storedSettings[key] ?? defaultSettings[key]]))
   } catch {
     return { ...defaultSettings }
   }

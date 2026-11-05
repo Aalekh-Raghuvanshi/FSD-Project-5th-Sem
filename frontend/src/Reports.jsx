@@ -5,7 +5,6 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts'
 import { AlertCircle, CalendarDays, CheckCircle2, ClipboardList, LoaderCircle, Users } from 'lucide-react'
-import { readSettings } from './settings.js'
 
 const chartColors = ['#168f91', '#416e9a', '#79b6b0', '#e6a65d', '#a78bca', '#d87575', '#8ca3b8']
 const appointmentColors = { Scheduled: '#168f91', Pending: '#e6a65d', Completed: '#416e9a', Cancelled: '#bdc9d3' }
@@ -20,7 +19,7 @@ function Reports() {
   const [patients, setPatients] = useState([])
   const [appointments, setAppointments] = useState([])
   const [departments, setDepartments] = useState([])
-  const [range, setRange] = useState(() => readSettings().reportRange)
+  const [range, setRange] = useState('30')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 

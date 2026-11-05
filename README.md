@@ -1,8 +1,6 @@
-# CarePoint — Smart Hospital Management & Patient Intelligence
+# CarePoint — Smart Hospital Management
 
-CarePoint is a college project for managing fictional hospital records and presenting simple, explainable patient insights. It combines a React dashboard with an Express REST API.
-
-> **Patient intelligence is for demonstration only.** Risk labels and alerts use simple rules applied to sample records. They are not clinically validated and must not be used for diagnosis or treatment.
+CarePoint is a college project for managing fictional hospital records. It combines a React dashboard with an Express REST API. The dashboard shows simple, rule-based health alerts; there is no separate Patient Intelligence page.
 
 ## Features
 
@@ -11,9 +9,9 @@ CarePoint is a college project for managing fictional hospital records and prese
 - Doctor directory with add, edit, availability, and department filters.
 - Appointment scheduling, status updates, cancellation, and conflict checks.
 - Department summaries with live doctor and patient counts.
-- Explainable patient risk categories, health alerts, and individual summaries.
+- Rule-based health alerts on the dashboard.
 - Reports with registration, department, appointment, and patient-status charts.
-- Local hospital, administrator, and dashboard preferences.
+- Hospital and administrator settings saved in browser local storage; the administrator menu opens Settings.
 - Responsive navigation and layouts for desktop and mobile.
 
 ## Technology
@@ -89,7 +87,6 @@ frontend/
     Dashboard.jsx
     Departments.jsx
     Doctors.jsx
-    Intelligence.jsx
     Patients.jsx
     Reports.jsx
     SettingsPage.jsx
@@ -138,16 +135,25 @@ The backend starts with 18 fictional patients, 8 fictional doctors, 7 department
 
 ## Screenshots
 
-Capture screenshots while the app is running and place them in `docs/screenshots/` before submitting or presenting the project. Suggested screens:
+### 1. Dashboard Overview
+![Dashboard](screenshots/dashboard.png)
 
-- Dashboard overview
-- Patient management and patient profile
-- Doctor and appointment management
-- Patient intelligence dashboard
-- Reports and analytics
+### 2. Patient Management and Patient Profile
+![Patients](screenshots/patient.png)
 
-## Notes for the demo
+### 3. Appointment Management
+![Appointments](screenshots/appointment.png)
 
-- Start both servers with `npm run dev` before opening the frontend.
-- Keep the backend running while demonstrating create, edit, delete, and status updates; restarting it restores the initial sample records.
-- The patient intelligence rules are intentionally small enough to explain during a project review or viva.
+### 4. Reports
+![Reports](screenshots/report.png)
+
+### 5. Settings Panel
+![Settings](screenshots/settings.png)
+
+## Team Details
+
+- [Aalekh Raghuvanshi](https://github.com/Aalekh-Raghuvanshi)
+- [Bhavya Khare](https://github.com/BhavyaKhare27)
+- [Devam Sharma](https://github.com/Devamsharma33)
+- [Hemant Kumar](https://github.com/hemant-010)
+- [Naman Kumar](https://github.com/Naman-Codezone)

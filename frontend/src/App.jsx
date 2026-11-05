@@ -5,13 +5,12 @@ import Appointments from './Appointments.jsx'
 import Departments from './Departments.jsx'
 import Doctors from './Doctors.jsx'
 import Patients from './Patients.jsx'
-import Intelligence from './Intelligence.jsx'
 import Reports from './Reports.jsx'
 import { readSettings } from './settings.js'
 import SettingsPage from './SettingsPage.jsx'
 import {
-  Activity, Bell, CalendarDays, ChevronDown, ClipboardList, HeartPulse, LayoutDashboard,
-  Menu, Search, Settings, ShieldAlert, Stethoscope, Users, X, Building2,
+  Activity, CalendarDays, ChevronDown, ClipboardList, LayoutDashboard,
+  Menu, Settings, Stethoscope, Users, X, Building2,
 } from 'lucide-react'
 
 const navigation = [
@@ -20,7 +19,6 @@ const navigation = [
   { label: 'Doctors', path: '/doctors', icon: Stethoscope },
   { label: 'Appointments', path: '/appointments', icon: CalendarDays },
   { label: 'Departments', path: '/departments', icon: Building2 },
-  { label: 'Patient Intelligence', path: '/intelligence', icon: HeartPulse },
   { label: 'Reports', path: '/reports', icon: ClipboardList },
   { label: 'Settings', path: '/settings', icon: Settings },
 ]
@@ -54,13 +52,6 @@ function Sidebar({ closeMenu }) {
           </NavLink>
         ))}
       </nav>
-
-      <div className="mt-auto rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-        <div className="mb-2 flex items-center gap-2 text-sm font-semibold"><ShieldAlert size={16} className="text-teal-300" /> Need help?</div>
-        <p className="text-xs leading-5 text-slate-300">Contact the hospital support team for assistance.</p>
-        <button className="mt-3 text-xs font-semibold text-teal-300 hover:text-white">Contact support <span aria-hidden="true">→</span></button>
-      </div>
-      <div className="mt-4 border-t border-white/10 px-2 pt-4 text-[11px] text-slate-500">CarePoint · Student Project</div>
     </aside>
   )
 }
@@ -81,22 +72,14 @@ function Topbar({ title, onMenu }) {
         </div>
       </div>
       <div className="flex items-center gap-2 md:gap-4">
-        <label className="hidden h-10 w-56 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 focus-within:border-teal md:flex">
-          <Search size={16} className="text-slate-400" />
-          <input className="w-full bg-transparent text-xs outline-none placeholder:text-slate-400" placeholder="Search anything..." aria-label="Search" />
-          <kbd className="rounded border border-slate-200 bg-white px-1 text-[10px] text-slate-400">⌘K</kbd>
-        </label>
         <span className="hidden text-xs text-slate-500 xl:block">{date}</span>
-        <button className="relative rounded-xl p-2.5 text-slate-500 transition hover:bg-slate-100 hover:text-navy" aria-label="Notifications">
-          <Bell size={19} /><span className="absolute right-2 top-2 h-2 w-2 rounded-full border-2 border-white bg-orange-400" />
-        </button>
         <div className="relative">
           <button onClick={() => setProfileOpen(!profileOpen)} className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-50" aria-expanded={profileOpen}>
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d9eeec] text-xs font-bold text-[#147b79]">{initials}</span>
             <span className="hidden text-left sm:block"><span className="block text-xs font-semibold text-slate-700">{userSettings.adminName}</span><span className="block text-[10px] text-slate-400">Administrator</span></span>
             <ChevronDown size={14} className="hidden text-slate-400 sm:block" />
           </button>
-          {profileOpen && <div className="absolute right-0 top-12 w-44 rounded-xl border border-slate-100 bg-white p-2 shadow-lg"><button onClick={() => setProfileOpen(false)} className="w-full rounded-lg px-3 py-2 text-left text-xs text-slate-600 hover:bg-slate-50">My profile</button><button onClick={() => setProfileOpen(false)} className="w-full rounded-lg px-3 py-2 text-left text-xs text-slate-600 hover:bg-slate-50">Account settings</button></div>}
+          {profileOpen && <div className="absolute right-0 top-12 w-44 rounded-xl border border-slate-100 bg-white p-2 shadow-lg"><NavLink to="/settings" onClick={() => setProfileOpen(false)} className="block w-full rounded-lg px-3 py-2 text-left text-xs text-slate-600 hover:bg-slate-50">Settings</NavLink></div>}
         </div>
       </div>
     </header>
@@ -130,7 +113,6 @@ function AppLayout() {
     Doctors: 'View and manage the hospital medical team.',
     Appointments: 'Coordinate patient visits and appointment schedules.',
     Departments: 'Explore hospital departments and their care teams.',
-    'Patient Intelligence': 'Review explainable patient risk signals and health alerts.',
     Reports: 'Explore hospital activity and performance summaries.',
     Settings: 'Manage hospital profile and application preferences.',
   }
@@ -144,9 +126,7 @@ function AppLayout() {
           ? <Appointments />
           : page.path === '/departments'
             ? <Departments />
-            : page.path === '/intelligence'
-              ? <Intelligence />
-              : page.path === '/reports'
+            : page.path === '/reports'
                 ? <Reports />
                 : page.path === '/settings'
                   ? <SettingsPage />
@@ -158,7 +138,7 @@ function AppLayout() {
       {mobileMenuOpen && <div className="fixed inset-0 z-40 lg:hidden"><button onClick={() => setMobileMenuOpen(false)} className="absolute inset-0 bg-slate-950/40" aria-label="Close navigation" /><div className="relative h-full w-[280px]"><button onClick={() => setMobileMenuOpen(false)} className="absolute right-3 top-3 z-10 rounded-lg p-2 text-white hover:bg-white/10" aria-label="Close menu"><X size={18} /></button><Sidebar closeMenu={() => setMobileMenuOpen(false)} /></div></div>}
       <div className="min-w-0 flex-1">
         <Topbar title={page.label} onMenu={() => setMobileMenuOpen(true)} />
-        <main className={`px-5 py-7 md:px-8 md:py-9 ${readSettings().compactTables ? 'compact-table' : ''}`}>{content}</main>
+        <main className="px-5 py-7 md:px-8 md:py-9">{content}</main>
       </div>
     </div>
   )
